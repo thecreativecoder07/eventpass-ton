@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PostgreSQL (via Supabase in production)
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: eventpass
+      POSTGRES_USER: eventpass
+      POSTGRES_PASSWORD: eventpass_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass eventpass_dev
+    volumes:
+      - redisdata:/data
+
+  # API Server
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://eventpass:eventpass_dev@postgres:5432/eventpass
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eventpass_dev
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+  # Telegram Bot
+  bot:
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    env_file:
+      - .env
+
+  # Indexer
+  indexer:
+    build:
+      context: .
+      dockerfile: apps/indexer/Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://eventpass:eventpass_dev@postgres:5432/eventpass
+      - REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
+  redisdata:

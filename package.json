@@ -1,0 +1,21 @@
+{
+  "name": "eventpass-ton",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cross-chain event ticket sales on TON blockchain",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0"
+  }
+}
