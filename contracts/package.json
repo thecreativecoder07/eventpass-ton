@@ -1,0 +1,15 @@
+{
+  "name": "@eventpass/contracts",
+  "version": "0.1.0",
+  "description": "EventPass TON smart contracts in Tolk",
+  "scripts": {
+    "build": "acton build",
+    "test": "acton test",
+    "deploy:testnet": "acton deploy --network testnet",
+    "deploy:mainnet": "acton deploy --network mainnet",
+    "gas-profile": "acton gas-profile"
+  },
+  "devDependencies": {
+    "acton": "latest"
+  }
+}

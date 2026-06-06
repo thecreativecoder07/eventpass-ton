@@ -1,0 +1,34 @@
+{
+  "compiler": {
+    "language": "tolk",
+    "version": "latest"
+  },
+  "networks": {
+    "testnet": {
+      "endpoint": "https://testnet.toncenter.com/api/v2/",
+      "type": "testnet"
+    },
+    "mainnet": {
+      "endpoint": "https://toncenter.com/api/v2/",
+      "type": "mainnet"
+    }
+  },
+  "contracts": [
+    {
+      "name": "EventPassSBT",
+      "path": "src/eventpass_sbt.tolk"
+    },
+    {
+      "name": "EventFactory",
+      "path": "src/event_factory.tolk"
+    },
+    {
+      "name": "RoyaltySplitter",
+      "path": "src/royalty_splitter.tolk"
+    },
+    {
+      "name": "CrossChainClaim",
+      "path": "src/cross_chain_claim.tolk"
+    }
+  ]
+}
