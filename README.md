@@ -1,100 +1,71 @@
 # 🎟️ EventPass TON
 
-Cross-chain event ticket sales on the TON blockchain.
+Cross-chain event ticketing as **Soulbound Tokens (SBTs)** on the TON blockchain.
 
-Soulbound tokens (SBTs) for non-transferable tickets + STON.fi Omniston for multi-chain payments — buy with ETH, USDC, BNB, or TON.
+Buy tickets with **any token on any chain** — ETH, USDC, BNB, MATIC — powered by **STON.fi Router v2 + Omniston** for atomic cross-chain swaps.
 
-## Architecture
+## 🌉 Architecture
 
 ```
-Telegram Mini App (React + Vite)
-         │
-    API Gateway (Nginx)
-         │
-   ┌─────┴──────┐
-   │  NestJS     │  Backend microservices
-   │  Services   │  (swap orchestrator, SBT minter, etc.)
-   └─────┬──────┘
-   ┌─────┴──────┐
-   │  Supabase  │  PostgreSQL + Auth + Realtime
-   │  Redis     │  Queue + Cache
-   └─────┬──────┘
-   ┌─────┴──────┐
-   │  TON       │  Smart Contracts (Tolk)
-   │  STON.fi   │  DEX + Omniston
-   └────────────┘
+Telegram Mini App (React)
+        │
+        ▼
+  NestJS Backend (API + Swap Orchestrator + SBT Minter)
+        │
+        ├── STON.fi Router v2 (same-chain DEX)
+        ├── Omniston (cross-chain swaps via HTLC)
+        ├── TON Connect (wallet auth)
+        └── Telegram Bot (Stars payments + notifications)
+        │
+        ▼
+  TON Blockchain (Tolk Smart Contracts)
+        ├── EventPassSBT — Soulbound ticket token
+        ├── EventFactory — Event creation & management
+        └── RoyaltySplitter — Revenue distribution
 ```
 
-## Features
-
-- 🌉 **Cross-chain payments** — ETH, USDC, BNB, MATIC → TON via Omniston HTLC
-- 🎫 **Soulbound tokens** — non-transferable, non-burnable ticket NFTs
-- ⚡ **Gasless purchases** — resolvers cover gas fees
-- ⭐ **Telegram Stars** — fiat on-ramp for non-crypto users
-- 📱 **Telegram Mini App** — native in-app experience
-- 🔍 **On-chain verification** — QR check-in with blockchain proof
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Smart Contracts | Tolk + Acton toolchain |
-| Backend | NestJS + TypeScript |
-| Frontend | React 19 + Vite + Tailwind |
-| Database | Supabase (PostgreSQL) |
-| Queue | BullMQ + Redis |
-| DEX | STON.fi Router v2 |
-| Cross-chain | Omniston (RFQ + HTLC) |
-| Wallet | TON Connect v3 |
-| Bot | grammY |
-| DevOps | Docker + Kubernetes |
-
-## Quick Start
-
-```bash
-# Clone
-gh repo clone thecreativecoder07/eventpass-ton
-cd eventpass-ton
-
-# Install dependencies
-npm install
-
-# Copy environment
-cp .env.example .env
-
-# Start services
-docker compose up -d
-
-# Run backend
-cd apps/api && npm run start:dev
-
-# Run frontend
-cd apps/mini-app && npm run dev
-```
-
-## Project Structure
+## 📦 Monorepo Structure
 
 ```
 eventpass-ton/
-├── apps/
-│   ├── api/              # NestJS backend
-│   ├── mini-app/         # React Telegram Mini App
-│   ├── bot/              # grammY Telegram bot
-│   └── indexer/          # Blockchain event indexer
-├── contracts/
-│   ├── eventpass_sbt.tolk
-│   ├── event_factory.tolk
-│   └── royalty_splitter.tolk
-├── packages/
-│   ├── sdk/              # Shared TypeScript SDK
-│   └── types/            # Shared types
-├── infra/
-│   ├── docker/
-│   ├── k8s/
-│   └── github-actions/
-└── docs/
+├── contracts/          # Tolk smart contracts (Acton toolchain)
+├── backend/            # NestJS microservices
+│   ├── api-gateway/
+│   ├── event-service/
+│   ├── swap-orchestrator/
+│   ├── sbt-minter/
+│   ├── indexer/
+│   └── notification-service/
+├── mini-app/           # React + Vite Telegram Mini App
+├── bot/                # grammY Telegram bot
+├── infra/              # Docker, K8s, CI/CD
+└── docs/               # Architecture & API docs
 ```
 
-## License
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start backend in dev mode
+cd backend && npm run start:dev
+
+# Start Mini App in dev mode
+cd mini-app && npm run dev
+
+# Start Telegram bot
+cd bot && npm run dev
+```
+
+## 🔗 Key Integrations
+
+- **STON.fi Router v2** — Same-chain DEX swaps on TON
+- **Omniston** — Cross-chain atomic swaps (ETH/USDC/BNB → TON)
+- **TON Connect** — Wallet authentication & transaction signing
+- **Telegram Stars** — Fiat on-ramp for non-crypto users
+- **Acton** — Tolk smart contract toolchain
+
+## 📄 License
 
 MIT

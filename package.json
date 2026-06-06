@@ -1,21 +1,24 @@
 {
   "name": "eventpass-ton",
   "version": "0.1.0",
+  "description": "Cross-chain event ticketing as Soulbound Tokens on TON blockchain",
   "private": true,
-  "description": "Cross-chain event ticket sales on TON blockchain",
+  "license": "MIT",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "backend/*",
+    "mini-app",
+    "bot",
+    "contracts"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e"
+    "dev:backend": "cd backend/api-gateway && npm run start:dev",
+    "dev:miniapp": "cd mini-app && npm run dev",
+    "dev:bot": "cd bot && npm run dev",
+    "build:all": "npm run build --workspaces",
+    "lint:all": "npm run lint --workspaces",
+    "test:all": "npm run test --workspaces"
   },
-  "devDependencies": {
-    "turbo": "^2.5.0",
-    "typescript": "^5.8.0"
+  "engines": {
+    "node": ">=22.0.0"
   }
 }
